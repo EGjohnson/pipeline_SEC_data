@@ -14,17 +14,21 @@ location_checked=[]
 the_split=[]
 #===================================================================
 
-fh.seek(0)
-header=fh.readline()
 
-header = fh.readline() 
+#buffer past header
+fh.seek(0)
+fh.readline()
+fh.seek(fh.tell())
+
 
 while True:
     # 1. See if a new line has been written
     #================================================================
-    try_this_line=fh.tell() # check this line for new writes
-    line=fh.readline(try_this_line) # content written on this line
+    try_this_line=fh.tell() # bookmark line
+    #fh.seek(try_this_line) #resets to beginning
+    line=fh.readline() # content written on this line
     line_split=line.split(',')
+    print len(line_split)
     the_split.append(line_split)
     
     #2. If nothing has been written wait two seconds and look again
