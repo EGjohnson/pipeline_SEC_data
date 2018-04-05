@@ -34,8 +34,8 @@ grab_dat=lambda x: x[0:3]+x[4:7]
 
 #....................................................................
 def check_field_length(lx,i): #takes in raw line
-    if len(line_split)!=15 and len(line_split)>0:
-        print "check_field_length error: not enough fields!"
+    if len(lx)!=15 and len(lx)>0:
+        print "L"+str(i)+" check_field_length error: not enough fields!"
         return False
     else:
         return True
@@ -46,7 +46,7 @@ def convert_datetime(lx,i):
         dto=datetime.strptime(dts,'%Y-%m-%d,%H:%M:%S') #date time object
         return dto
     except Exception as e:
-        print "convert_datetime error for line: " +str(i)
+        print  "L"+str(i)+" convert_datetime error: " +str(e)
         return e
         
     
@@ -107,7 +107,8 @@ while True:
         pass
     else:
         continue
-    
+ 
+fh.seek(0)   #reset
     
     # b. verify we can generate a dattime object from fields
 
