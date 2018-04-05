@@ -28,7 +28,7 @@ the_split=[]
 #functions
 #===================================================================
 check_len = lambda x: len(x)==15
-grab_dat=lambda x: x[0:3]+x[4:7]
+#grab_dat=lambda x: x[0:3]+x[4:7]
 
 
 
@@ -48,6 +48,9 @@ def convert_datetime(lx,i):
 #    except Exception as e:
 #        print  "L"+str(i)+" convert_datetime error: " +str(e)
 #        return e
+def convert_unique_doc_request(lx,i):
+        udr=str(lx[4])+str(lx[5])+str(lx[6]) #key unique doc request
+        return udr
         
     
 #................................................................
@@ -101,7 +104,7 @@ while True:
     #=============================================================
     print "begin processing line"
     
-    # a. verify we do not have a truncated line, if so give up
+    # a. verify we do not have a truncated line, else give up
     #--------------------------------------------------------------
     if check_field_length(line_split,i)==True:
         pass
