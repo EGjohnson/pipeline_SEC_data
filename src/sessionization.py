@@ -9,7 +9,7 @@ import time
 from datetime import datetime
 #os.chdir('~/PetGit/pipeline_SEC_data/input') # Provide the path here
 print os.getcwd() # Prints the working directory
-datapath='/home/ej/PetGit/pipeline_SEC_data/input/log.csv'
+datapath='/home/ej/PetGit/pipeline_SEC_data/input/log_1000.csv'
 fh = open(datapath, 'r')
 location_checked=[]
 the_split=[]
@@ -17,7 +17,7 @@ the_split=[]
 #===================================================================
 check_len = lambda x: len(x)==15
 grab_dat=lambda x: x[0:3]+x[4:7]
-def convert_datetime(lx):
+#def convert_datetime(lx):
     #dts=str(lx[1])+[","]str(lx[2]) #date time string
     #dto=datetime.strptime(ds,'%Y-%m-%d,%H:%M:%S') #date time object
     
@@ -26,9 +26,11 @@ def convert_datetime(lx):
 fh.seek(0)
 fh.readline()
 fh.seek(fh.tell())
-
+i=1
 
 while True:
+    print(i)
+    i=i+1
     # 1. See if a new line has been written
     #================================================================
     try_this_line=fh.tell() # bookmark line
@@ -37,6 +39,7 @@ while True:
     line_split=line.split(',')
     print check_len(line_split)
     the_split.append(line_split)
+
     
     #2. If nothing has been written wait two seconds and look again
     #==============================================================
