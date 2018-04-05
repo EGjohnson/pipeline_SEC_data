@@ -21,7 +21,7 @@ import time
 from datetime import datetime
 #os.chdir('~/PetGit/pipeline_SEC_data/input') # Provide the path here
 print os.getcwd() # Prints the working directory
-datapath='/home/ej/PetGit/pipeline_SEC_data/input/log_trunct_lines.csv'
+datapath='/home/ej/PetGit/pipeline_SEC_data/input/log_badtime.csv'
 fh = open(datapath, 'r')
 location_checked=[]
 the_split=[]
@@ -41,13 +41,13 @@ def check_field_length(lx,i): #takes in raw line
         return True
  
 def convert_datetime(lx,i):
-    try:
         dts=str(lx[1])+str(",")+str(lx[2]) #date time string
         dto=datetime.strptime(dts,'%Y-%m-%d,%H:%M:%S') #date time object
         return dto
-    except Exception as e:
-        print  "L"+str(i)+" convert_datetime error: " +str(e)
-        return e
+        #if cannot convert fields into datetime object return False
+#    except Exception as e:
+#        print  "L"+str(i)+" convert_datetime error: " +str(e)
+#        return e
         
     
 #................................................................
@@ -100,13 +100,25 @@ while True:
     # 3. Otherwise process the line
     #=============================================================
     print "begin processing line"
-    # Process entry ----------------------------------------------
     
-    # a. verify we do not have a truncated line
+    # a. verify we do not have a truncated line, if so give up
+    #--------------------------------------------------------------
     if check_field_length(line_split,i)==True:
         pass
     else:
         continue
+    
+    #.b attempt to create datetime object from fields or give up
+    #--------------------------------------------------------------
+    try:
+        dto=convert_datetime(line_split,i) #make datetime object from fields
+    except Exception as e:
+        print  "L"+str(i)+" convert_datetime error: " +str(e)
+        continue
+    
+    
+    
+ 
  
 fh.seek(0)   #reset
     
