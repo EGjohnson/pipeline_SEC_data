@@ -6,14 +6,21 @@ Created on Tue Apr  3 15:05:46 2018
 """
 import os
 import time
+from datetime import datetime
 #os.chdir('~/PetGit/pipeline_SEC_data/input') # Provide the path here
 print os.getcwd() # Prints the working directory
 datapath='/home/ej/PetGit/pipeline_SEC_data/input/log.csv'
 fh = open(datapath, 'r')
 location_checked=[]
 the_split=[]
+#functions
 #===================================================================
-
+check_len = lambda x: len(x)==15
+grab_dat=lambda x: x[0:3]+x[4:7]
+def convert_datetime(lx):
+    #dts=str(lx[1])+[","]str(lx[2]) #date time string
+    #dto=datetime.strptime(ds,'%Y-%m-%d,%H:%M:%S') #date time object
+    
 
 #buffer past header
 fh.seek(0)
@@ -28,7 +35,7 @@ while True:
     #fh.seek(try_this_line) #resets to beginning
     line=fh.readline() # content written on this line
     line_split=line.split(',')
-    print len(line_split)
+    print check_len(line_split)
     the_split.append(line_split)
     
     #2. If nothing has been written wait two seconds and look again
