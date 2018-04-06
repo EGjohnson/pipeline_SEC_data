@@ -7,7 +7,7 @@ Created on Thu Apr  5 13:28:23 2018
 import unittest
 import datetime
 from sessionization import check_field_length, convert_datetime
-from sessionization import convert_unique_doc_request, ip_lapsed
+from sessionization import *
 
 class TestFactorial(unittest.TestCase):
     """
@@ -27,7 +27,7 @@ class TestFactorial(unittest.TestCase):
         # if strings not in proper format returns value error
         self.assertRaises(ValueError,convert_datetime,tlf,0)
         # properly formatted string returns datetime object
-        is_true=isinstance(convert_datetime(tlt,0), datetime.datetime)
+        is_true=isinstance(convert_datetime(tlt,0), datetime)
         self.assertTrue(is_true)
         
     #test 3
@@ -41,20 +41,27 @@ class TestFactorial(unittest.TestCase):
         self.assertTrue(is_true)
         
     # test 4
-    def test_ip_lapsed(self):
-        gp=3#grace period
-        ct=10 #current new time
-        #tuple
-        st=[("ip1",4,'s'),("ip1",5,'s'),("ip1",6,'s')] #session should end
-        sf1=[("ip2",4,'s'),("ip2",6,'s'),("ip2",8,'s')]
-        sf2=[("ip2",6,'s'),("ip2",7,'s'),("ip2",8,'s')]
+    def test_is_session_over(self):
+        a=datetime(2017, 6, 30, 0, 0, 4)
+        b=datetime(2017, 6, 30, 0, 0, 5)
+        c=datetime(2017, 6, 30, 0, 0, 6)
+        d=datetime(2017, 6, 30, 0, 0, 4)
+        e=datetime(2017, 6, 30, 0, 0, 6)
+        f=datetime(2017, 6, 30, 0, 0, 8)
+        g=datetime(2017, 6, 30, 0, 0, 6)
+        h=datetime(2017, 6, 30, 0, 0, 7)
+        i=datetime(2017, 6, 30, 0, 0, 8)
+        ct=datetime(2017, 6, 30, 0, 0, 10) #current time (10 seconds)
+        
+        st=[("ip1",a,'s'),("ip1",b,'s'),("ip1",c,'s')] #session should end
+        sf1=[("ip2",d,'s'),("ip2",e,'s'),("ip2",f,'s')] 
+        sf2=[("ip3",g,'s'),("ip3",h,'s'),("ip3",i,'s')]
         tups=st+sf1+sf2
-        ip_lapsed(tups,gp,ct)=["ip1"]
+        
+        self.assertTrue(is_session_over("ip1",tups,ct,3))
+        self.assertFalse(is_session_over("ip2",tups,ct,3))
         
         
-    
-
-
 
 if __name__ == '__main__':
     unittest.main()

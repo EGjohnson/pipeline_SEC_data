@@ -33,7 +33,10 @@ error_rec=[]
 check_len = lambda x: len(x)==15
 no_blank=lambda x: '' not in x[0:3]+x[4:7]
 no_space=lambda x: ' ' not in x[0:3]+x[4:7]
-ip_lapsed=lambda tups,e,t: set([x[0] for x in tups if x[1]+e<t])
+grab_ip=lambda tups:set([x[0] for x in tups]) #graps unique ip for session
+sub_ip=lambda tups,ip:[x for x in tups if x[0]==ip] #subset by ip
+max_t_ip=lambda tups,ip:max([x[1] for x in tups if x[0]==ip]) #max time ip
+session_elapsed=lambda ct,t,e: True if (ct-t).seconds>e else False #tests if time elapsed
 
 #....................................................................
 def check_field_length(lx,i): #takes in raw line
@@ -51,6 +54,12 @@ def convert_datetime(lx,i):
 def convert_unique_doc_request(lx,i):
         udr=str(lx[4])+str(lx[5])+str(lx[6]) #key unique doc request
         return udr
+        
+def is_session_over(ip,tups,ct,e): 
+    #ip tups current time and elapsed time allowed for session
+    mt=max_t_ip(tups,ip) #last time accessed
+    tf=session_elapsed(ct,mt,e) #status of session 
+    return tf
 
 
     
@@ -142,13 +151,15 @@ while True:
         continue
     
     
-    # 4. Now add to dictionary object of current sessions
+    # 4. Now add to current sessions
     #------------------------------------------------------------------
-    #ip address, time of 1st request, time of 2nd request, duration, count requests
-    cs[line_split[0]+str(i)]=(dto,line_split[0],urk+str(i)) # add datetime and ip and access record
     #session  time1stdoc-timelastdoc+elapsedtime
     #duration time1stdoc-timelastdoc
+    print line_split[2]
+    tups=(dto,line_split[0],urk+str(i)) # add datetime and ip and access record
+            
     
+    #ip address, time of 1st request, time of 2nd request, duration, count requests
     
  
 gc.collect() 
