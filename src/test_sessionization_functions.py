@@ -13,6 +13,12 @@ class TestFactorial(unittest.TestCase):
     """
     Our basic test class
     """
+    def return_group():  
+        g1=('101.81.133.jja', datetime(2017, 6, 30, 0, 0), '1608552.00001047469-17-004337-index.htm2', '2017-06-30', '00:00:00')
+        g2=('101.81.133.jja', datetime(2017, 6, 30, 0, 5), '1027281.00000898430-02-001167-index.htm3', '2017-06-30', '00:00:05')
+        g3=('101.81.133.jja', datetime(2017, 6, 30, 0, 10), '1027281.00000898430-02-001167-index.htm3', '2017-06-30', '00:00:10')
+        grp=[g1,g2,g3]
+        return grp
     #test 1
     def test_check_field_length(self):
         # methods that start with test treated as test case
@@ -60,6 +66,14 @@ class TestFactorial(unittest.TestCase):
         
         self.assertTrue(is_session_over("ip1",tups,ct,3))
         self.assertFalse(is_session_over("ip2",tups,ct,3))
+        
+        
+    def test_group_to_entry(self):   
+        g1=('101.81.133.jja', datetime(2017, 6, 30, 0, 0), '1608552.00001047469-17-004337-index.htm2', '2017-06-30', '00:00:00')
+        g2=('101.81.133.jja', datetime(2017, 6, 30, 0, 5), '1027281.00000898430-02-001167-index.htm3', '2017-06-30', '00:00:05')
+        g3=('101.81.133.jja', datetime(2017, 6, 30, 0, 10), '1027281.00000898430-02-001167-index.htm3', '2017-06-30', '00:00:10')
+        grp=[g1,g2,g3]
+        #self.assertgroup_to_entry
         
         
 
