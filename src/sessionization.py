@@ -26,7 +26,7 @@ datapath='/home/ej/PetGit/pipeline_SEC_data/input/log.csv'
 fh = open(datapath, 'r')
 location_checked=[]
 the_split=[]
-cs={} #dictionary of current sessions
+tups=[] #current sessions
 error_rec=[]
 #functions
 #===================================================================
@@ -58,6 +58,8 @@ def convert_unique_doc_request(lx,i):
 def is_session_over(ip,tups,ct,e): 
     #ip tups current time and elapsed time allowed for session
     mt=max_t_ip(tups,ip) #last time accessed
+    #print "last rec recorded-----------"
+    #print mt
     tf=session_elapsed(ct,mt,e) #status of session 
     return tf
 
@@ -147,7 +149,7 @@ while True:
     try:
         urk=convert_unique_doc_request(line_split,i) #unique request key
     except Exception as e:
-        error_rec.append("L"+str(i)+" convert_unique_doc_request error: " +str(e))
+        error_rec.append("L"+str(i)+"convert_unique_doc_request error: " +str(e))
         continue
     
     
@@ -155,9 +157,33 @@ while True:
     #------------------------------------------------------------------
     #session  time1stdoc-timelastdoc+elapsedtime
     #duration time1stdoc-timelastdoc
-    print line_split[2]
-    tups=(dto,line_split[0],urk+str(i)) # add datetime and ip and access record
-            
+  
+    # 4a. update time ................................
+    ct=dto #curent time
+    print ct
+    
+    # 4b. ID sessions are over .......................
+    ips=grab_ip(tups)
+    print "the ips -----------------------"
+    print ips
+    ips_over=[ip for ip in ips if is_session_over(ip,tups,ct,1)==True]
+    print " the ips sessions that are done ------"
+    print ips_over
+    
+    # 4c. write sessions that are over ..............
+    
+    # 4d. remove sessions that are over..............
+    print "the new current sessions with old sessions removed -----"
+    clean_tups=[tup for tup in tups if tup[0] not in ips_over]
+    for mytup in clean_tups:
+        print mytup[0:2]
+    tups=clean_tups
+    
+    print "--------------------------------------------------"
+    
+    
+    tups.append((line_split[0],dto,urk+str(i))) # add datetime and ip and access record
+
     
     #ip address, time of 1st request, time of 2nd request, duration, count requests
     
