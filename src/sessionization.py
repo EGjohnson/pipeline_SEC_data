@@ -17,7 +17,6 @@ elapse_datpath=topdir+"/input/inactivity_period.txt"
 f_elapse=open(elapse_datpath, 'r')
 elapse=f_elapse.readline()
 f_elapse.close()
-elapse=2
 datapath=topdir+'/input/log.csv'
 fh = open(datapath, 'r')
 datapath_out=topdir+'/output/sessionization.txt'
